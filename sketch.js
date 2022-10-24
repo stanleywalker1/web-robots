@@ -28,17 +28,8 @@ function setup() {
   createCanvas(800,600);
   bodyPallete = [color('#7400b8'), color('#e67e22'), color('#5e60ce'), color('#5390d9'), color('#4ea8de'), color('48bfe3,'), color('#56cfe1'), color('#64dfdf'), color('#72efdd'), color('#80ffdb')];
   headPallete = [color('#006d77'), color('#83c5be'), color('#f0f3bd'), color('#ffddd2'), color('#e29578')];
-
-
-  // for(let i = arrowAmount-1; i >= 0; i--){
-  //   arrows.push(new Arrow(imageX, imageY, startArrow));
-  // }
-
-
-
   arrows = [["up", upArrow], ["right", rightArrow], ["down", downArrow], ["left", leftArrow]];
   
-
   imageX = width/2;
   imageY = height/2;
 
@@ -48,11 +39,7 @@ function setup() {
       arrowsArr.push(new Arrow(x, y, startArrow));
     }
   }
-
-  //arrow = new Arrow(imageX, imageY, startArrow);
-
   winner = new Winner(winnerLoc(), 8, 100);
- // console.log(winnerLoc());
 }
 
 function draw() {
@@ -87,15 +74,8 @@ function draw() {
     arrowsArr[i].checkClick();
 
   }
- // winner();
-
- // checkCollision(1, 23);
   winner.display();
   winner.update();
-
-
-
- 
 }
 
 function visor(){
@@ -155,7 +135,6 @@ class Robot {
     this.Xspeed = speed;
     this.Yspeed = speed;
     this.mouth = random(mouthArr);
-   // this.arms = arms();
   }
 
   display() {
@@ -205,20 +184,14 @@ class Robot {
         let d = dist(this.x, this.y, arrowsArr[i].x+25, arrowsArr[i].y+25);
         let m = map(d, 20, 200, 3, 0.1);
 
-
          if (d < 200){
-         
           stroke(255);
           strokeWeight(m);
-        //  console.log(m);
           line(this.x, this.y, arrowsArr[i].x+25, arrowsArr[i].y+25);
         }
 
 
         if (d < 20){  // if the robot is approaching the arrow, swap direction
-        //  console.log(d);
-         
-
           if(arrowsArr[i].dir == "right"){
             this.dir = "right";
           } 
@@ -232,9 +205,7 @@ class Robot {
             this.dir = "down";
           }
         }
-
         let winD = dist(this.x, this.y, winner.x, winner.y);
-       // line(this.x, this.y, winner.x, winner.y);
 
         if (winD < 30){
           score++;
@@ -255,15 +226,11 @@ class Arrow {
 
   display(){
     image(this.graphic, this.x, this.y);
-   // console.log("clicked");
-   
   }
 
   checkClick(testX, testY) {
 
     if (testX > this.x && testX < this.x+50 && testY > this.y && testY < this.y + 50) {
-      console.log("y: " + this.y);
-      console.log("x: " + this.x);
       return true;
     }
     else {
@@ -275,24 +242,18 @@ class Arrow {
        if(this.dir=="up"){
           this.graphic = rightArrow;
           this.dir = "right";
-          console.log("press right");
         }
         else if(this.dir=="right"){
           this.graphic = downArrow;
           this.dir = "down";
-          console.log("press down");
         }
         else if(this.dir=="down"){
           this.graphic = leftArrow;
           this.dir = "left";
-          console.log("press left");
-    
         }
         else if(this.dir=="left"){
           this.graphic = upArrow;
           this.dir = "up";
-          console.log("press up");
-    
         }
       }
 
@@ -303,8 +264,6 @@ function mousePressed() {
   // see if the user is clicking on the button
   for(let i = arrowsArr.length-1; i >=0;i--){
   let clicked = arrowsArr[i].checkClick(mouseX, mouseY);
- // console.log(clicked);
-  
 
   if (clicked == true) {
     
@@ -312,25 +271,20 @@ function mousePressed() {
     if(arrowsArr[i].dir=="up"){
       arrowsArr[i].graphic = rightArrow;
       arrowsArr[i].dir = "right";
-     // console.log("press right");
-
     }
     else if(arrowsArr[i].dir=="right"){
       arrowsArr[i].graphic = downArrow;
       arrowsArr[i].dir = "down";
-      //("press down");
 
     }
     else if(arrowsArr[i].dir=="down"){
       arrowsArr[i].graphic = leftArrow;
       arrowsArr[i].dir = "left";
-     // console.log("press left");
 
     }
     else if(arrowsArr[i].dir=="left"){
       arrowsArr[i].graphic = upArrow;
       arrowsArr[i].dir = "up";
-     // console.log("press up");
 
     }
   }
