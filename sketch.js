@@ -106,22 +106,39 @@ function twoEyes(){
   rect(this.x-this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 6, 10);
   rect(this.x+this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 6, 10);
 }
-// function arms(){
-//   rotate(PI/3.0);
-//   rect(this.x+this.bodySize/2, this.y, 2, 12);
-// }
 
-// function winner(){
-//   // constructor(){
+function glasses(){
+  fill(0);
+  ellipse(this.x-this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 15, 10);
+  ellipse(this.x+this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 15, 10);
 
-//   // }
-//   rectMode(CENTER);
-//   rect(width-5, height/2, 8, 100);
-// }
+  stroke(0);
+  strokeWeight(2);
+  line(this.x-this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, this.x+this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2);
+}
+
+function mouth(){
+  fill(255);
+  rect(this.x, this.y-this.bodySize/2-(this.headSize/3), this.headSize/2, 4);
+}
+
+function mouth1(){
+  stroke(255);
+  fill(0);
+  rect(this.x, this.y-this.bodySize/2-(this.headSize/3), this.headSize/2, 4);
+}
+
+const mouthArr = [
+  mouth,
+  mouth1
+]
+
+
 
 const eyeArray = [
   visor,
-  twoEyes
+  twoEyes,
+  glasses
 ]
 
 
@@ -137,6 +154,7 @@ class Robot {
     this.dir = dir;
     this.Xspeed = speed;
     this.Yspeed = speed;
+    this.mouth = random(mouthArr);
    // this.arms = arms();
   }
 
@@ -148,6 +166,8 @@ class Robot {
     rect(this.x, this.y-this.bodySize/2-this.headSize/2, this.headSize, this.headSize);
     fill(255);
     this.eyes();
+    
+    this.mouth();
   }
 
   move(){
@@ -338,8 +358,8 @@ class Winner {
   display(){
     a = (128 + 128 * sin(millis() / 700));
     strokeWeight(2);
-    stroke(0, 200, 0);
-    fill(255, a);
+    stroke(255);
+    fill(0, 200, 0, a);
     rectMode(CENTER);
     rect(this.x, this.y, this.sizeX, this.sizeY);
   }
