@@ -256,7 +256,6 @@ class Arrow {
           this.dir = "up";
         }
       }
-
   }
 
 
