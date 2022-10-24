@@ -9,6 +9,10 @@ let arrow;
 let tracker = 0;
 let arrowAmount = 20;
 let interval = 2;
+let winner;
+let x; 
+let y;
+let score = 0;
 
 function preload() {
   // load in all of our graphics
@@ -47,10 +51,17 @@ function setup() {
 
   //arrow = new Arrow(imageX, imageY, startArrow);
 
+  winner = new Winner(winnerLoc(), 8, 100);
+ // console.log(winnerLoc());
 }
 
 function draw() {
   background(20);
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  textSize(18);
+  text("Score: " + score, 25, 45);
 
   if(frameCount % (interval * 30) == 0){
     robots.push(new Robot(-50, height/2, random(40, 50),random(30, 35), random(headPallete), random(bodyPallete), "right", 2));
@@ -68,18 +79,6 @@ function draw() {
       robots.splice(i, 1);
       i = i - 1;
     } 
-    // if(robots[i].x < -80){
-    //   robots.splice(i, 1);
-    //   i = i - 1;
-    // } 
-    // if(robots[i].y > height){
-    //   robots.splice(i, 1);
-    //   i = i - 1;
-    // } 
-    // if(robots[i].y < -50){
-    //   robots.splice(i, 1);
-    //   i = i - 1;
-    // } 
 
   }
 
@@ -88,8 +87,11 @@ function draw() {
     arrowsArr[i].checkClick();
 
   }
+ // winner();
 
  // checkCollision(1, 23);
+  winner.display();
+  winner.update();
 
 
 
@@ -104,10 +106,18 @@ function twoEyes(){
   rect(this.x-this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 6, 10);
   rect(this.x+this.headSize/4, this.y-this.bodySize/2-(this.headSize/3)*2, 6, 10);
 }
-function arms(){
-  rotate(PI/3.0);
-  rect(this.x+this.bodySize/2, this.y, 2, 12);
-}
+// function arms(){
+//   rotate(PI/3.0);
+//   rect(this.x+this.bodySize/2, this.y, 2, 12);
+// }
+
+// function winner(){
+//   // constructor(){
+
+//   // }
+//   rectMode(CENTER);
+//   rect(width-5, height/2, 8, 100);
+// }
 
 const eyeArray = [
   visor,
@@ -202,37 +212,15 @@ class Robot {
             this.dir = "down";
           }
         }
+
+        let winD = dist(this.x, this.y, winner.x, winner.y);
+       // line(this.x, this.y, winner.x, winner.y);
+
+        if (winD < 30){
+          score++;
+        }
       }
 
-
-
-
-      //   let d = dist(this.x, this.y, arrowsArr[20].x, arrowsArr[20].y);
-      //   // console.log(arrowsArr[0].d20r);
-      //   if(frameCount % (interval * 30) == 0){
-
-      //    console.log(d);
-
-      //   }
-      //   // console.log(arrowsArr[20].x);
- 
- 
-      //    if (d < 10){  // 20f the robot 20s approach20ng the arrow, swap d20rect20on
-      //      console.log(d);
-      //      if(arrowsArr[20].dir == "right"){
-      //        this.dir = "right";
-      //      } 
-      //      if (arrowsArr[20].dir == "left"){
-      //        this.dir = "left";
-      //      } 
-      //      if (arrowsArr[20].dir == "up") {
-      //        this.dir = "up";
-      //      } 
-      //      if(arrowsArr[20].dir == "down"){
-      //        this.dir = "down";
-      //      }
-         
-      // }
     }
 }
 
@@ -252,59 +240,15 @@ class Arrow {
   }
 
   checkClick(testX, testY) {
-   // console.log("checking...");
 
-    // now test to see if the user is over the button - if so, they are clicking on it!
-    // console.log("x: " + this.x);
-    // console.log("y: " + this.y);
-
-    // if (testX > buttonX && testX < buttonX+100 && testY > buttonY && testY < buttonY + 100) {
-    //   fill(0,255,0);
-    // }
-    // else {
-    //   fill(255);
-    // }
-  
-    // rect(buttonX, buttonY, 100, 100);
-    if (testX > this.x && testX < this.x+100 && testY > this.y && testY < this.y + 100) {
+    if (testX > this.x && testX < this.x+50 && testY > this.y && testY < this.y + 50) {
       console.log("y: " + this.y);
       console.log("x: " + this.x);
-      // if (mousePressed()) {
-
-      //   if(this.dir=="up"){
-      //     this.graphic = rightArrow;
-      //     this.dir = "right";
-      //     console.log("press right");
-    
-      //   }
-      //   else if(this.dir=="right"){
-      //     this.graphic = downArrow;
-      //     this.dir = "down";
-      //     console.log("press down");
-    
-      //   }
-      //   else if(this.dir=="down"){
-      //     this.graphic = leftArrow;
-      //     this.dir = "left";
-      //     console.log("press left");
-    
-      //   }
-      //   else if(this.dir=="left"){
-      //     this.graphic = upArrow;
-      //     this.dir = "up";
-      //     console.log("press up");
-    
-      //   }
-      // }
-      
       return true;
     }
-  
-    // not over the button - return false
     else {
       return false;
     }
-   
   }
 
   checkPressed(){
@@ -332,10 +276,7 @@ class Arrow {
         }
       }
 
-
   }
-
-
 
 
 function mousePressed() {
@@ -351,27 +292,64 @@ function mousePressed() {
     if(arrowsArr[i].dir=="up"){
       arrowsArr[i].graphic = rightArrow;
       arrowsArr[i].dir = "right";
-      console.log("press right");
+     // console.log("press right");
 
     }
     else if(arrowsArr[i].dir=="right"){
       arrowsArr[i].graphic = downArrow;
       arrowsArr[i].dir = "down";
-      console.log("press down");
+      //("press down");
 
     }
     else if(arrowsArr[i].dir=="down"){
       arrowsArr[i].graphic = leftArrow;
       arrowsArr[i].dir = "left";
-      console.log("press left");
+     // console.log("press left");
 
     }
     else if(arrowsArr[i].dir=="left"){
       arrowsArr[i].graphic = upArrow;
       arrowsArr[i].dir = "up";
-      console.log("press up");
+     // console.log("press up");
 
     }
   }
 }
+}
+
+function winnerLoc(){
+
+  y = random(100, height-100);
+  x = width-5;
+
+
+  let arr = [x, y];
+  return arr;
+}
+
+class Winner {
+  constructor(pos, sizeX, sizeY){
+    this.x = pos[0];
+    this.y =  pos[1];
+    this.sizeX = sizeX;
+    this.sizeY = sizeY;
+  }
+
+  display(){
+    a = (128 + 128 * sin(millis() / 700));
+    strokeWeight(2);
+    stroke(0, 200, 0);
+    fill(255, a);
+    rectMode(CENTER);
+    rect(this.x, this.y, this.sizeX, this.sizeY);
+  }
+
+  update(){
+    if(frameCount % (10 * 30) == 0){
+      this.y = random(100, height-100);
+    
+    }
+
+  }
+
 }
